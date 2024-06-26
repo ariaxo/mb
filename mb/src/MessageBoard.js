@@ -4,6 +4,7 @@ import axios from 'axios';
 const MessageBoard = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [alias, setAlias] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -31,10 +32,16 @@ const MessageBoard = () => {
       return;
     }
 
+    if (!alias.trim()) {
+      setError('Alias cannot be empty');
+      return;
+    }
+
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/messages', { message: newMessage });
+      await axios.post('http://localhost:5000/messages', { alias, message: newMessage });
       setNewMessage('');
+      setAlias('');
       setSuccess('Message posted successfully');
       fetchMessages();
     } catch (error) {
@@ -49,6 +56,12 @@ const MessageBoard = () => {
     <div>
       <h1>Message Board</h1>
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={alias}
+          onChange={(e) => setAlias(e.target.value)}
+          placeholder="Enter your alias"
+        />
         <textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
@@ -63,7 +76,7 @@ const MessageBoard = () => {
       <div>
         {messages.map((msg, index) => (
           <div key={index}>
-            <p>{msg.message}</p>
+            <p><strong>{msg.alias}:</strong> {msg.message}</p>
           </div>
         ))}
       </div>
@@ -72,3 +85,4 @@ const MessageBoard = () => {
 };
 
 export default MessageBoard;
+

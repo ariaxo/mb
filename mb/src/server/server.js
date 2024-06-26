@@ -1,4 +1,3 @@
-// server/server.js
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -36,8 +35,8 @@ app.get('/messages', (req, res) => {
 });
 
 app.post('/messages', (req, res) => {
-  const { message } = req.body;
-  db.query('INSERT INTO messages (message) VALUES (?)', [message], (err, result) => {
+  const { alias, message } = req.body;
+  db.query('INSERT INTO messages (alias, message) VALUES (?, ?)', [alias, message], (err, result) => {
     if (err) {
       res.status(500).send(err);
     } else {
