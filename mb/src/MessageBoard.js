@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container, TextField, Button, Typography, Paper, Box, CircularProgress, Alert } from '@mui/material';
 
 const MessageBoard = () => {
   const [messages, setMessages] = useState([]);
@@ -53,34 +54,46 @@ const MessageBoard = () => {
   };
 
   return (
-    <div>
-      <h1>Message Board</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={alias}
-          onChange={(e) => setAlias(e.target.value)}
-          placeholder="Enter your alias"
-        />
-        <textarea
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Write your message here..."
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Posting...' : 'Post Message'}
-        </button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-      <div>
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Message Board
+      </Typography>
+      <Paper elevation={3} style={{ padding: '1rem', marginBottom: '1rem' }}>
+        <form onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column" gap="1rem">
+            <TextField
+              label="Alias"
+              variant="outlined"
+              value={alias}
+              onChange={(e) => setAlias(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Message"
+              variant="outlined"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              multiline
+              rows={4}
+              fullWidth
+            />
+            <Button type="submit" variant="contained" color="primary" disabled={loading} fullWidth>
+              {loading ? <CircularProgress size={24} /> : 'Post Message'}
+            </Button>
+          </Box>
+        </form>
+        {error && <Alert severity="error" style={{ marginTop: '1rem' }}>{error}</Alert>}
+        {success && <Alert severity="success" style={{ marginTop: '1rem' }}>{success}</Alert>}
+      </Paper>
+      <Box>
         {messages.map((msg, index) => (
-          <div key={index}>
-            <p><strong>{msg.alias}:</strong> {msg.message}</p>
-          </div>
+          <Paper key={index} style={{ padding: '1rem', marginBottom: '1rem' }}>
+            <Typography variant="subtitle1"><strong>{msg.alias}:</strong></Typography>
+            <Typography variant="body1">{msg.message}</Typography>
+          </Paper>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 
