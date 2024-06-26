@@ -11,7 +11,7 @@
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "gh-pages": "^2.18.1" // 这里是你可能漏掉的逗号
+    "gh-pages": "^2.18.1" 
   },
   "main": "index.js",
   "homepage": "https://blog.ariax.icu/mb/",
