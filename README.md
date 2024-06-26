@@ -1,7 +1,10 @@
-### Create react app
-```
-npx create-react-app mb
-```
+# JUST SOME SIMPLE MESSAGE BOARD?
+### To-do
+(26 JUN)
+- Deploy remotely(done)
+- Dark mode
+- An admin user grant to delete post
+- Search according to key words?
 ### Run project(locally)
 ```
 // Under MessageBoard.js dir
