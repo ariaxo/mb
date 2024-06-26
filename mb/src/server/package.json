@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "https://blog.ariax.icu/mb/",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1"
     "start": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "npm run build",
@@ -19,9 +19,5 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mysql": "^2.18.1"
-  },
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
   }
 }
-
