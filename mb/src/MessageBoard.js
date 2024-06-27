@@ -2,9 +2,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from './ThemeContext';
 import axios from 'axios';
+import AdminLogin from './AdminLogin';
 import { Button, TextField, Container, CssBaseline, Typography,Paper,Box,CircularProgress,Alert } from '@mui/material';
 
-const MessageBoard = () => {
+const MessageBoard = (token) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [alias, setAlias] = useState('');
@@ -12,6 +13,7 @@ const MessageBoard = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+    const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken'));
 
     useEffect(() => {
         fetchMessages();
@@ -56,6 +58,20 @@ const MessageBoard = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (!adminToken) return alert('Admin not logged in');
+        try {
+            await axios.delete(`http://localhost:5000/messages/${id}`, {
+                headers: { Authorization: adminToken },
+            });
+            fetchMessages();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to delete message');
+        }
+    };
+
+
     return (
         <Container maxWidth="sm">
             <CssBaseline />
@@ -94,6 +110,15 @@ const MessageBoard = () => {
                     <Paper key={index} style={{ padding: '1rem', marginBottom: '1rem' }}>
                         <Typography variant="subtitle1"><strong>{msg.alias}:</strong></Typography>
                         <Typography variant="body1">{msg.message}</Typography>
+                        {token && (
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => handleDelete(msg.id)}
+                            >
+                                Delete
+                            </Button>
+                        )}
                     </Paper>
                 ))}
             </Box>
@@ -107,8 +132,13 @@ const MessageBoard = () => {
                     onClick={toggleDarkMode}
                 >
                     Toggle {darkMode ? 'Light' : 'Dark'} Mode
-                </Button>
-            
+            </Button>
+
+            {adminToken ? (
+                <Button onClick={() => { localStorage.removeItem('adminToken'); setAdminToken(null); }}>Logout</Button>
+            ) : (
+                <AdminLogin setAdminToken={(token) => { localStorage.setItem('adminToken', token); setAdminToken(token); }} />
+            )}
             
         </Container>
     );
