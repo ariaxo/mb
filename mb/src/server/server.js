@@ -44,8 +44,6 @@ function verifyToken(req, res, next) {
 // Admin login
 app.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
-
-    // Replace this with a secure method of fetching admin details
     const adminUsername = 'admin';
     const adminPasswordHash = bcrypt.hashSync('admin', 8);
 
